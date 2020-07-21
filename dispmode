@@ -1,0 +1,42 @@
+#!/bin/bash
+
+dialog=$(\
+	zenity --title "Bilschirmmodus" --width=640 --height=480 --window-icon=/usr/share/icons/Papirus/32x32/devices/display.svg \
+		--list \
+		--text "Bitte Anzeigeoption wählen." \
+		--column "Modus" --column "Beschreibung" \
+		"Intern"	"Eingebauten Bildschirm verwenden"\
+		"HDMI Only"	"Ausgabe nur über HDMI-Anschluss" \
+		"VGA Only"	"Ausgabe nur über VGA-Anschluss" \
+		"DP+DVI Dock"	"Zwei Bildschirme im Dock, intern deaktiviert"\
+		"DP Dock"	"Nutze nur DP-Anschluss im Dock"\
+		"VGA Beamer"	"Erweitere die interne Anzeige um VGA-Ausgabe für Präsentationen" \
+		"HDMI Beamer"	"Erweitere die interne Anzeige um HDMI-Ausgabe für Präsentationen" \
+		2>/dev/null
+	)
+
+case $dialog in
+	Intern)
+	cmd="xrandr --output LVDS-1 --auto"
+	;;
+	'HDMI Only')
+	cmd="xrandr --output LVDS-1 --off --output HDMI-1 --auto"
+	;;
+	'VGA Only')
+	cmd="xrandr --output LVDS-1 --off --output VGA-1 --auto"
+	;;
+	'DP Dock')
+	cmd="xrandr --output LVDS-1 --off --output DP-2 --auto"
+	;;
+	Beamer)
+	cmd="xrandr --output LVDS-1 --auto --output VGA-1 --auto --above LVDS-1"
+	;;
+	*)
+	cmd=""
+esac
+
+if [[ -n $cmd ]]; then
+	xrandr --auto && eval $cmd
+fi
+
+exit 0

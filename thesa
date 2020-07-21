@@ -1,0 +1,14 @@
+#!/bin/bash
+
+maxn=20
+
+if [ -z $1 ]; then
+	read q
+else
+	q=$1
+fi
+
+curl -s "https://www.openthesaurus.de/synonyme/search?q=$q&format=application/json" \
+| jq '. | .synsets[].terms[].term' \
+| head -n $maxn \
+| tr -d '"'

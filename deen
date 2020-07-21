@@ -1,0 +1,2 @@
+#!/bin/bash
+trans -b de:en "$1"
