@@ -1,14 +1,19 @@
-#!/bin/bash
+#!/usr/bin/env sh
 
-maxn=20
+# OpenThesaurus API URL
+API_URL='https://www.openthesaurus.de/synonyme/search?format=application/json'
+# display N_MAX synonyms max.
+N_MAX=20
 
+# allow argument or piped data as input
 if [ -z $1 ]; then
-	read q
+        read q
 else
-	q=$1
+        q=$1
 fi
 
-curl -s "https://www.openthesaurus.de/synonyme/search?q=$q&format=application/json" \
+# fetch result and make it pretty
+curl -s --data-urlencode "q=$q" "$API_URL" \
 | jq '. | .synsets[].terms[].term' \
-| head -n $maxn \
+| head -n $N_MAX \
 | tr -d '"'
