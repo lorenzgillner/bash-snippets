@@ -6,7 +6,7 @@ API_URL='https://www.openthesaurus.de/synonyme/search?format=application/json'
 N_MAX=20
 
 # allow argument or piped data as input
-if [ -z $1 ]; then
+if [ -z "$1" ]; then
         read q
 else
         q=$1
