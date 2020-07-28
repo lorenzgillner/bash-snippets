@@ -1,7 +1,7 @@
-#!/usr/bin/env sh
+#!/bin/bash
 
 help() {
-	echo "Usage: ∞ command"
+	echo "Usage: ash command"
 	exit 1
 }
 
@@ -10,14 +10,29 @@ end() {
 	exit 0
 }
 
-[ -z $1 ] && help
+run() {
+	while read -p "($1): " input
+	do
+		eval $1 "$input"
+	done
+}
 
-cmd=$1
-
-while read -p "($cmd): " input
-do
-	eval $cmd "$input"
+while getopts ":hc" opt; do
+	case $opt in
+		h) help
+		;;
+		c) cf=1
+		;;
+	esac
 done
+
+shift $((OPTIND - 1))
+
+[[ -z "$1" || "$1" == "-" ]] && help
+
+[[ -n $cf ]] && clear
+
+run $1
 
 trap end INT
 trap end EXIT

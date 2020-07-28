@@ -1,0 +1,40 @@
+#!/bin/bash
+
+API="https://api.github.com/search/repositories?q="
+SORT="&sort=stars"
+
+function usage {
+    printf "No.\n"
+    exit
+}
+
+while getopts ":hl:" OPT; do
+    case $OPT in
+        h) usage ;;
+        l) PROGLANG="+language:$OPTARG"; break ;;
+    esac
+done
+
+shift $((OPTIND - 1))
+
+SEARCH="$@"
+
+[[ -z "$SEARCH" ]] && usage
+
+echo -e "GitHub projects for search term \"$SEARCH\":\n"
+
+if [[ -n $PROGLANG ]]; then
+    SEARCH="$SEARCH$PROGLANG"
+fi
+
+RESULT=$( \
+    curl -s -H "Content-Type: application/json" $API$SEARCH$SORT \
+    | jq -r '.items[] | "Name:\t\t\(.name)\nURL:\t\t\(.html_url)\nDescription:\n\(.description)\n"' \
+)
+
+if [[ -z "$RESULT" ]]; then
+    printf "Couldn't find any projects!\n"
+else
+    echo -e "$RESULT"
+fi
+
