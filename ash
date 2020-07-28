@@ -17,11 +17,13 @@ run() {
 	done
 }
 
-while getopts ":hc" opt; do
+while getopts ":hc:" opt; do
 	case $opt in
 		h) help
 		;;
 		c) cf=1
+		;;
+		:) echo "????"
 		;;
 	esac
 done

@@ -28,13 +28,14 @@ if [[ -n $PROGLANG ]]; then
 fi
 
 RESULT=$( \
-    curl -s -H "Content-Type: application/json" $API$SEARCH$SORT \
-    | jq -r '.items[] | "Name:\t\t\(.name)\nURL:\t\t\(.html_url)\nDescription:\n\(.description)\n"' \
+	curl -s -H "Content-Type: application/json" $API$SEARCH$SORT \
+	| jq -r '.items[] | "\(.name)\n\(.html_url)\n>> \(.description)\n"' \
+	| fmt -s
 )
 
 if [[ -z "$RESULT" ]]; then
-    printf "Couldn't find any projects!\n"
+	printf "Couldn't find any projects!\n"
 else
-    echo -e "$RESULT"
+	echo -e "$RESULT"
 fi
 
