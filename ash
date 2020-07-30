@@ -13,7 +13,7 @@ end() {
 run() {
 	while read -p "($1): " input
 	do
-		eval $1 "$input"
+		[[ -n "$input" ]] && eval $1 "$input"
 	done
 }
 
