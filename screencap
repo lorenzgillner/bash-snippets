@@ -1,0 +1,10 @@
+#!/bin/bash
+
+resolution=$(xdpyinfo | grep -oP 'dimensions:\s+\K\S+')
+
+if [ -z $1 ]; then
+    printf "Please supply an output file name!\n"
+    exit 1
+else
+    ffmpeg -f x11grab -s $resolution -i :0.0 -c:v h264_nvenc $1
+fi
