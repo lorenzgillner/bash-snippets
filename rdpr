@@ -1,0 +1,2 @@
+#!/bin/bash
+rsync -u $(cat /home/lmg/.sync_this) ooo:/home/lmg/.syncd/
