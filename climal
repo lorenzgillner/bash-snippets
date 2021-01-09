@@ -1,0 +1,21 @@
+#!/bin/bash
+
+TOKEN="$(cat $HOME/.local/share/mal/.token)"
+
+ANIME_KEY=$1
+ANIME_ID="$(grep -m 1 -i $ANIME_KEY $HOME/.local/share/mal/ids)"
+ANIME_ID="${ANIME_ID#* }"
+
+N_EPISODES=$2
+
+STATUS="watching"
+[[ -n "$3" ]] && STATUS="$3"
+
+printf "%s: %s (%d)\n" $ANIME_KEY $STATUS $(\
+        curl -s "https://api.myanimelist.net/v2/anime/$ANIME_ID/my_list_status" \
+                -X PUT \
+                -d num_watched_episodes=$N_EPISODES \
+                -d status=$STATUS \
+                -H "Authorization: Bearer $TOKEN" \
+        | jq -r '.num_episodes_watched'
+)
