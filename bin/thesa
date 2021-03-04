@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 
 # OpenThesaurus API URL
 API_URL='https://www.openthesaurus.de/synonyme/search?format=application/json'
