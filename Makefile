@@ -1,8 +1,8 @@
-DEST = /mnt/e/bin/
-TARG = ash deen ende ghs thesa
+DEST = /mnt/e/bin
+TARG = bin
 
 all:
 	$(info Did you mean 'install'?)
 
-install: $(TARG)
-	cp $(TARG) $(DEST)
+install:
+	cp $(TARG)/* $(DEST)/
